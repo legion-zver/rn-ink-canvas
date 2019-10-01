@@ -1,0 +1,32 @@
+{
+  "name": "rn-ink-canvas",
+  "title": "React Native Ink Canvas",
+  "version": "0.0.1",
+  "description": "TODO",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legion-zver/rn-ink-canvas.git",
+    "baseUrl": "https://github.com/legion-zver/rn-ink-canvas"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Alexander Garin",
+    "email": "garin1221@yandex.ru"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.59.10 <0.60.x",
+    "react-native-windows": ">=0.59.0-rc.3 <0.60.x"
+  },
+  "devDependencies": {
+    "react": "^16.8.3",
+    "react-native": "^0.59.10",
+    "react-native-windows": "^0.59.0-rc.3"
+  }
+}
