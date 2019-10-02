@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "react": "^16.8.6",
+    "prop-types": "^15.7.2",
     "react-native": "^0.59.10",
     "react-native-windows": "^0.59.0-rc.3"
   }
