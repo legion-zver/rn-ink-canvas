@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { requireNativeComponent } from 'react-native';
+import { View, requireNativeComponent } from 'react-native';
 
 const RNInkCanvas = requireNativeComponent('RNInkCanvas', InkCanvas, {
     nativeOnly: {onChange: true}
@@ -15,6 +15,7 @@ export default class InkCanvas extends React.PureComponent {
         onChange: PropTypes.func,
         onExport: PropTypes.func,
         readOnly: PropTypes.bool,
+        style: PropTypes.any,
     };
 
     static defaultProps = {
@@ -69,11 +70,15 @@ export default class InkCanvas extends React.PureComponent {
     };
 
     render() {
+        const { style, ...props } = this.props || {};
         return (
-            <RNInkCanvas {...this.props}
-                         onChange={this.onChange}
-                         onExport={this.onExport}
-                         ref={this._onChangeNativeRef} />
+            <View style={style}>
+                <RNInkCanvas {...(props || {})}
+                             onChange={this.onChange}
+                             onExport={this.onExport}
+                             ref={this._onChangeNativeRef}
+                             style={{flex: 1, width: '100%', height: '100%'}} />
+            </View>
         );
     }
 }
