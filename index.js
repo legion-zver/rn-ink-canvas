@@ -6,6 +6,7 @@ const RNInkCanvas = requireNativeComponent('RNInkCanvas', InkCanvas, {
     nativeOnly: {onChange: true}
 });
 
+// noinspection JSUnusedGlobalSymbols
 export default class InkCanvas extends React.PureComponent {
 
     static propTypes = {
@@ -46,21 +47,25 @@ export default class InkCanvas extends React.PureComponent {
         if (!this._nativeRef) {
             return;
         }
-        'clear' in this._nativeRef && this._nativeRef.clear();
+        'clear' in this._nativeRef &&
+        this._nativeRef.clear();
     };
 
     setStrokes = (strokes = []) => {
         if (!this._nativeRef) {
             return;
         }
-        'setStrokes' in this._nativeRef && this._nativeRef.setStrokes(strokes);
+        'setStrokes' in this._nativeRef &&
+        this._nativeRef.setStrokes(strokes);
     };
 
-    exportImageBytes = () => {
+    // noinspection JSUnusedGlobalSymbols
+    requestExportImageBytes = () => {
         if (!this._nativeRef) {
             return;
         }
-        'exportImageBytes' in this._nativeRef && this._nativeRef.exportImageBytes();
+        'exportImageBytes' in this._nativeRef &&
+        this._nativeRef.exportImageBytes();
     };
 
     render() {
