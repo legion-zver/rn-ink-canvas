@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Windows.UI.Input.Inking;
 using Microsoft.Toolkit.Uwp.Helpers;
 
-namespace Ink.Canvas
+namespace RNInkCanvas
 {
     class RNInkCanvasChangeEvent : Event
     {

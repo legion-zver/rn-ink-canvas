@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using ReactNative.UIManager.Events;
 
-namespace Ink.Canvas
+namespace RNInkCanvas
 {
     class RNInkCanvasExportEvent : Event
     {

@@ -12,7 +12,7 @@ using Microsoft.Graphics.Canvas;
 using System;
 using System.IO;
 
-namespace Ink.Canvas
+namespace RNInkCanvas
 {
     class RNInkCanvasManager : SimpleViewManager<InkCanvas>
     {
@@ -60,7 +60,7 @@ namespace Ink.Canvas
             // Set supported inking device types.
             canvas.InkPresenter.InputDeviceTypes =
                 Windows.UI.Core.CoreInputDeviceTypes.Mouse |
-                Windows.UI.Core.CoreInputDeviceTypes.Touch | 
+                Windows.UI.Core.CoreInputDeviceTypes.Touch |
                 Windows.UI.Core.CoreInputDeviceTypes.Pen;
 
             // Set initial ink stroke attributes.
@@ -123,7 +123,7 @@ namespace Ink.Canvas
                         foreach (JObject objPoint in arrayPoints)
                         {
                             points.Add(new InkPoint(new Windows.Foundation.Point(
-                                objPoint.Value<double>("x"), 
+                                objPoint.Value<double>("x"),
                                 objPoint.Value<double>("y")
                             ), objPoint.Value<float>("p")));
                         }
@@ -147,7 +147,7 @@ namespace Ink.Canvas
                         var width = (int)view.ActualWidth;
                         var height = (int)view.ActualHeight;
                         var device = CanvasDevice.GetSharedDevice();
-                        var renderTarget = new CanvasRenderTarget(device, width, height, 96); 
+                        var renderTarget = new CanvasRenderTarget(device, width, height, 96);
                         using (var ds = renderTarget.CreateDrawingSession())
                         {
                             ds.Clear(Windows.UI.Colors.White);
@@ -163,7 +163,7 @@ namespace Ink.Canvas
                         }
                     }
                     return;
-                default: 
+                default:
                     break;
             }
             base.ReceiveCommand(view, commandId, args);

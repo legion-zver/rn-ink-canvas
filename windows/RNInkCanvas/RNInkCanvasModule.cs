@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
-namespace Ink.Canvas.RNInkCanvas
+namespace RNInkCanvas
 {
     /// <summary>
     /// A module that allows JS to share data.
