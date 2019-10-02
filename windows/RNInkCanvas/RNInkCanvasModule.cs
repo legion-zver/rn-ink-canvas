@@ -26,7 +26,7 @@ namespace Ink.Canvas.RNInkCanvas
         {
             get
             {
-                return "RNInkCanvas";
+                return "RNInkCanvasModule";
             }
         }
     }

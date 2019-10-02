@@ -44,10 +44,12 @@ namespace Ink.Canvas.RNInkCanvas
         /// </summary>
         /// <param name="reactContext">The react application context.</param>
         /// <returns>The list of view managers.</returns>
-        public IReadOnlyList<IViewManager> CreateViewManagers(
-            ReactContext reactContext)
+        public IReadOnlyList<IViewManager> CreateViewManagers(ReactContext reactContext)
         {
-            return new List<IViewManager>(0);
+            return new List<IViewManager>
+            {
+                new RNInkCanvasManager(reactContext),
+            };
         }
     }
 }
