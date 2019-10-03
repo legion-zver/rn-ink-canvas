@@ -2,12 +2,8 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { View, requireNativeComponent } from 'react-native';
 
-const RNInkCanvas = requireNativeComponent('RNInkCanvas', InkCanvas, {
-    nativeOnly: {onChange: true}
-});
-
 // noinspection JSUnusedGlobalSymbols
-export default class InkCanvas extends React.PureComponent {
+class InkCanvas extends React.Component {
 
     static propTypes = {
         lineColor: PropTypes.string,
@@ -34,14 +30,14 @@ export default class InkCanvas extends React.PureComponent {
         if (!this.props.onChange) {
             return;
         }
-        this.props.onChange(event.nativeEvent);
+        this.props.onChange((event.nativeEvent || {strokes: []}).strokes || []);
     };
 
     onExport = (event) => {
         if (!this.props.onExport) {
             return;
         }
-        this.props.onExport(event.nativeEvent);
+        this.props.onExport((event.nativeEvent || {base64: ''}).base64 || '');
     };
 
     clear = () => {
@@ -82,3 +78,12 @@ export default class InkCanvas extends React.PureComponent {
         );
     }
 }
+
+const RNInkCanvas = requireNativeComponent('RNInkCanvas', InkCanvas, {
+    nativeOnly: {
+        onChange: true,
+        onExport: true
+    }
+});
+
+export default InkCanvas;

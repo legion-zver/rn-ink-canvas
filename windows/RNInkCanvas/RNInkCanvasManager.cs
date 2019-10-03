@@ -2,10 +2,7 @@
 using ReactNative.UIManager;
 using ReactNative.UIManager.Annotations;
 using Windows.UI.Input.Inking;
-using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.UI.Input.Inking.Core;
-using Windows.UI.Core;
 using System.Collections.Generic;
 using ReactNative.Bridge;
 using Microsoft.Graphics.Canvas;
@@ -185,16 +182,15 @@ namespace RNInkCanvas
             view.EndChanging -= AGInkCanvas_EndChanging;
         }
 
-        private void AGInkCanvas_EndChanging(AGInkCanvas view, PointerEventArgs args)
+        private void AGInkCanvas_EndChanging(AGInkCanvas view, JArray strokes)
         {
             if (!view.HasTag())
             {
                 return;
             }
-            this.GetReactContext()
-                .GetNativeModule<UIManagerModule>()
-                .EventDispatcher
-                .DispatchEvent(new RNInkCanvasChangeEvent(view.GetTag(), view.InkPresenter.StrokeContainer.GetStrokes()));
+            var context = this.GetReactContext();
+            context.GetNativeModule<UIManagerModule>().EventDispatcher
+                .DispatchEvent(new RNInkCanvasChangeEvent(view.GetTag(), strokes));
         }
     }
 }

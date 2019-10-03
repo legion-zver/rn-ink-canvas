@@ -1,18 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using ReactNative.UIManager.Events;
-using System.Collections.Generic;
-using Windows.UI.Input.Inking;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace RNInkCanvas
 {
     class RNInkCanvasChangeEvent : Event
     {
-        private IReadOnlyList<InkStroke> _strokes;
+        private JArray _jArray;
 
-        public RNInkCanvasChangeEvent(int viewTag, IReadOnlyList<InkStroke> strokes) : base(viewTag)
+        public RNInkCanvasChangeEvent(int viewTag, JArray array) : base(viewTag)
         {
-            _strokes = strokes;
+            _jArray = array;
         }
 
         public override string EventName
@@ -25,29 +22,9 @@ namespace RNInkCanvas
 
         public override void Dispatch(RCTEventEmitter eventEmitter)
         {
-            var arrayStrokes = new JArray();
-            foreach (InkStroke stroke in _strokes)
-            {
-                var arrayPoints = new JArray();
-                foreach (InkPoint point in stroke.GetInkPoints())
-                {
-                    arrayPoints.Add(new JObject()
-                    {
-                        { "x", point.Position.X },
-                        { "y", point.Position.Y },
-                        { "p", point.Pressure },
-                    });
-                }
-                arrayStrokes.Add(new JObject()
-                {
-                    { "c", stroke.DrawingAttributes.Color.ToHex() },
-                    { "w", stroke.DrawingAttributes.Size.Width },
-                    { "points", arrayPoints }
-                });
-            }
             eventEmitter.receiveEvent(ViewTag, EventName, new JObject
             {
-                { "strokes", arrayStrokes }
+                { "strokes", _jArray }
             });
         }
     }
