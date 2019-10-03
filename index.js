@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { View, requireNativeComponent } from 'react-native';
+import { UIManager, View, Platform, requireNativeComponent, findNodeHandle } from 'react-native';
 
 // noinspection JSUnusedGlobalSymbols
 class InkCanvas extends React.Component {
@@ -42,29 +42,42 @@ class InkCanvas extends React.Component {
         this.props.onExport((event.nativeEvent || {}).base64 || '');
     };
 
-    clear = () => {
-        if (!this._nativeRef) {
-            return;
+    runCommand = (name, args = []) => {
+        if (this._nativeRef) {
+            const handle = findNodeHandle(this._nativeRef);
+            if (!handle) {
+                throw new Error('Cannot find node handles');
+            }
+            Platform.select({
+                default: () => {
+                    // noinspection JSUnresolvedVariable
+                    const commandId = UIManager.RNInkCanvas.Commands[name] || 0;
+                    if (!commandId) {
+                        throw new Error(`Cannot find command ${name} in RNInkCanvas manager!`);
+                    }
+                    UIManager.dispatchViewManagerCommand(handle, commandId, args);
+                },
+                ios: () => {
+                    // noinspection JSUnresolvedVariable
+                    NativeModules.RNInkCanvasManager[name](handle, ...args);
+                },
+            })();
+        } else {
+            throw new Error('No ref to RNInkCanvas component, check that component is mounted');
         }
-        'clear' in this._nativeRef &&
-        this._nativeRef.clear();
+    };
+
+    clear = () => {
+        this.runCommand('clear');
     };
 
     setStrokes = (strokes = []) => {
-        if (!this._nativeRef) {
-            return;
-        }
-        'setStrokes' in this._nativeRef &&
-        this._nativeRef.setStrokes(strokes);
+        this.runCommand('setStrokes', [strokes]);
     };
 
     // noinspection JSUnusedGlobalSymbols
     requestExportImageBytes = () => {
-        if (!this._nativeRef) {
-            return;
-        }
-        'exportImageBytes' in this._nativeRef &&
-        this._nativeRef.exportImageBytes();
+        this.runCommand('exportImageBytes');
     };
 
     render() {
@@ -72,10 +85,9 @@ class InkCanvas extends React.Component {
         return (
             <View style={style}>
                 <RNInkCanvas {...(props || {})}
-                             onChange={this.onChange}
-                             onExport={this.onExport}
                              ref={this._onChangeNativeRef}
-                             style={{flex: 1, width: '100%', height: '100%'}} />
+                             style={{flex: 1, width: '100%', height: '100%'}}
+                             onChange={this.onChange} onExport={this.onExport} />
             </View>
         );
     }

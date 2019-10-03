@@ -49,6 +49,23 @@ namespace RNInkCanvas
             return _reactContext;
         }
 
+        public override JObject CustomDirectEventTypeConstants
+        {
+            get
+            {
+                return new JObject
+                {
+                    {
+                        RNInkCanvasExportEvent.EventNameValue,
+                        new JObject
+                        {
+                            { "registrationName", "onExport" },
+                        }
+                    }
+                };
+            }
+        }
+
         protected override AGInkCanvas CreateViewInstance(ThemedReactContext reactContext)
         {
             var canvas = new AGInkCanvas();

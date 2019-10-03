@@ -5,6 +5,8 @@ namespace RNInkCanvas
 {
     class RNInkCanvasExportEvent : Event
     {
+        public static readonly string EventNameValue = "topExport";
+
         private string _base64;
 
         public RNInkCanvasExportEvent(int viewTag, string base64) : base(viewTag)
@@ -16,7 +18,7 @@ namespace RNInkCanvas
         {
             get
             {
-                return "topExport";
+                return RNInkCanvasExportEvent.EventNameValue;
             }
         }
 
