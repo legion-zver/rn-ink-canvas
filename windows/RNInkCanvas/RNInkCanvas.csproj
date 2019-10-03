@@ -7,8 +7,8 @@
     <ProjectGuid>{46474520-E460-11E9-ACAB-DDDFDF717C32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ink.Canvas</RootNamespace>
-    <AssemblyName>Ink.Canvas</AssemblyName>
+    <RootNamespace>RNInkCanvas</RootNamespace>
+    <AssemblyName>RNInkCanvas</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>

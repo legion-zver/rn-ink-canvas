@@ -14,15 +14,13 @@ using System.IO;
 
 namespace RNInkCanvas
 {
-    class RNInkCanvasManager : SimpleViewManager<InkCanvas>
+    class RNInkCanvasManager : SimpleViewManager<AGInkCanvas>
     {
         private const int CommandExportImageBase64 = 1;
         private const int CommandSetStrokes = 2;
         private const int CommandClear = 3;
 
         private ReactContext _reactContext;
-
-        private Dictionary<int, CoreInkIndependentInputSource> coreSources = new Dictionary<int, CoreInkIndependentInputSource>();
 
         public override string Name {
             get
@@ -54,9 +52,9 @@ namespace RNInkCanvas
             return _reactContext;
         }
 
-        protected override InkCanvas CreateViewInstance(ThemedReactContext reactContext)
+        protected override AGInkCanvas CreateViewInstance(ThemedReactContext reactContext)
         {
-            var canvas = new InkCanvas();
+            var canvas = new AGInkCanvas();
             // Set supported inking device types.
             canvas.InkPresenter.InputDeviceTypes =
                 Windows.UI.Core.CoreInputDeviceTypes.Mouse |
@@ -96,7 +94,7 @@ namespace RNInkCanvas
             view.InkPresenter.IsInputEnabled = !value;
         }
 
-        public override async void ReceiveCommand(InkCanvas view, int commandId, JArray args)
+        public override async void ReceiveCommand(AGInkCanvas view, int commandId, JArray args)
         {
             switch (commandId)
             {
@@ -169,67 +167,34 @@ namespace RNInkCanvas
             base.ReceiveCommand(view, commandId, args);
         }
 
-        protected override void AddEventEmitters(ThemedReactContext reactContext, InkCanvas view)
+        protected override void AddEventEmitters(ThemedReactContext reactContext, AGInkCanvas view)
         {
             base.AddEventEmitters(reactContext, view);
-            if (!view.HasTag())
-            {
-                return;
-            }
+            view.InitEventSystem();
 
-            int viewTag = view.GetTag();
-            removeCoreSource(viewTag);
+            view.EndChanging += AGInkCanvas_EndChanging;
 
-            CoreInkIndependentInputSource core = CoreInkIndependentInputSource.Create(view.InkPresenter);
-            core.PointerReleasing += Core_PointerReleasing;
-
-            // Put to sources
-            coreSources[viewTag] = core;
         }
 
-        private void removeCoreSource(int viewTag)
-        {
-            if (!coreSources.ContainsKey(viewTag))
-            {
-                return;
-            }
-            CoreInkIndependentInputSource core = coreSources[viewTag];
-            core.PointerReleasing -= Core_PointerReleasing;
-            core = null;
 
-            // Remove
-            coreSources.Remove(viewTag);
-        }
-
-        private int viewTagForCoreSource(CoreInkIndependentInputSource source)
-        {
-            foreach (KeyValuePair<int, CoreInkIndependentInputSource> pair in this.coreSources)
-            {
-                if (pair.Value == source)
-                {
-                    return pair.Key;
-                }
-            }
-            return -1;
-        }
-
-        public override void OnDropViewInstance(ThemedReactContext reactContext, InkCanvas view)
+        public override void OnDropViewInstance(ThemedReactContext reactContext, AGInkCanvas view)
         {
             base.OnDropViewInstance(reactContext, view);
-            removeCoreSource(view.GetTag());
+            view.DeinitEventSystem();
+
+            view.EndChanging -= AGInkCanvas_EndChanging;
         }
 
-        private void Core_PointerReleasing(CoreInkIndependentInputSource sender, PointerEventArgs args)
+        private void AGInkCanvas_EndChanging(AGInkCanvas view, PointerEventArgs args)
         {
-            int viewTag = this.viewTagForCoreSource(sender);
-            if (viewTag == -1)
+            if (!view.HasTag())
             {
                 return;
             }
             this.GetReactContext()
                 .GetNativeModule<UIManagerModule>()
                 .EventDispatcher
-                .DispatchEvent(new RNInkCanvasChangeEvent(viewTag, sender.InkPresenter.StrokeContainer.GetStrokes()));
+                .DispatchEvent(new RNInkCanvasChangeEvent(view.GetTag(), view.InkPresenter.StrokeContainer.GetStrokes()));
         }
     }
 }
