@@ -73,7 +73,7 @@ namespace RNInkCanvas
         }
 
         [ReactProp("lineWidth")]
-        public void SetLineWidth(InkCanvas view, double width)
+        public void SetLineWidth(AGInkCanvas view, double width)
         {
             InkDrawingAttributes drawingAttributes = view.InkPresenter.CopyDefaultDrawingAttributes();
             drawingAttributes.Size = new Windows.Foundation.Size(width, width);
@@ -81,7 +81,7 @@ namespace RNInkCanvas
         }
 
         [ReactProp("lineColor")]
-        public void SetLineColor(InkCanvas view, string color)
+        public void SetLineColor(AGInkCanvas view, string color)
         {
             InkDrawingAttributes drawingAttributes = view.InkPresenter.CopyDefaultDrawingAttributes();
             drawingAttributes.Color = ColorHelper.ToColor(color);
@@ -89,7 +89,7 @@ namespace RNInkCanvas
         }
 
         [ReactProp("readOnly")]
-        public void SetLineWidth(InkCanvas view, bool value)
+        public void SetLineWidth(AGInkCanvas view, bool value)
         {
             view.InkPresenter.IsInputEnabled = !value;
         }

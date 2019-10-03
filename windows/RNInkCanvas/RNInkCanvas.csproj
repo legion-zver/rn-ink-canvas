@@ -125,6 +125,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AGInkCanvas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RNInkCanvasChangeEvent.cs" />
     <Compile Include="RNInkCanvasExportEvent.cs" />
