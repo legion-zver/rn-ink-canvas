@@ -30,14 +30,16 @@ class InkCanvas extends React.Component {
         if (!this.props.onChange) {
             return;
         }
-        this.props.onChange((event.nativeEvent || {strokes: []}).strokes || []);
+        // noinspection JSUnresolvedVariable
+        this.props.onChange((event.nativeEvent || {}).strokes || []);
     };
 
     onExport = (event) => {
         if (!this.props.onExport) {
             return;
         }
-        this.props.onExport((event.nativeEvent || {base64: ''}).base64 || '');
+        // noinspection JSUnresolvedVariable
+        this.props.onExport((event.nativeEvent || {}).base64 || '');
     };
 
     clear = () => {
