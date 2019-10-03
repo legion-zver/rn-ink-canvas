@@ -16,18 +16,20 @@ namespace RNInkCanvas
             DeinitEventSystem();
 
             InkPresenter.StrokesCollected += InkPresenter_StrokesCollected;
+            InkPresenter.StrokesErased += InkPresenter_StrokesErased;
         }
 
         public void DeinitEventSystem()
         {
             InkPresenter.StrokesCollected -= InkPresenter_StrokesCollected;
+            InkPresenter.StrokesErased -= InkPresenter_StrokesErased;
         }
 
-        private void InkPresenter_StrokesCollected(InkPresenter sender, InkStrokesCollectedEventArgs args)
+        private void DidUpdateInkPresenter(InkPresenter inkPresenter)
         {
             // INFO: Generate JSON it! Not change it!
             var arrayStrokes = new JArray();
-            foreach (InkStroke stroke in args.Strokes)
+            foreach (InkStroke stroke in inkPresenter.StrokeContainer.GetStrokes())
             {
                 var arrayPoints = new JArray();
                 foreach (InkPoint point in stroke.GetInkPoints())
@@ -47,6 +49,16 @@ namespace RNInkCanvas
                 });
             }
             EndChanging.Invoke(this, arrayStrokes);
+        }
+
+        private void InkPresenter_StrokesErased(InkPresenter sender, InkStrokesErasedEventArgs args)
+        {
+            DidUpdateInkPresenter(sender);
+        }
+
+        private void InkPresenter_StrokesCollected(InkPresenter sender, InkStrokesCollectedEventArgs args)
+        {
+            DidUpdateInkPresenter(sender);
         }
     }
 }
