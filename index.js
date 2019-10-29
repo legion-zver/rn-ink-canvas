@@ -6,6 +6,7 @@ import { UIManager, View, Platform, requireNativeComponent, findNodeHandle } fro
 class InkCanvas extends React.Component {
 
     static propTypes = {
+        initStrokes: PropTypes.array,
         lineColor: PropTypes.string,
         lineWidth: PropTypes.number,
         onChange: PropTypes.func,
@@ -80,8 +81,14 @@ class InkCanvas extends React.Component {
         this.runCommand('exportImageBytes');
     };
 
+    componentDidMount() {
+        if ((this.props.initStrokes || []).length > 0) {
+            this.setStrokes(this.props.initStrokes);
+        }
+    }
+
     render() {
-        const { style, ...props } = this.props || {};
+        const { style, initStrokes, ...props } = this.props || {};
         return (
             <View style={style}>
                 <RNInkCanvas {...(props || {})}
