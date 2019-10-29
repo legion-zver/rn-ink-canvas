@@ -9,6 +9,7 @@ class InkCanvas extends React.Component {
         initStrokes: PropTypes.array,
         lineColor: PropTypes.string,
         lineWidth: PropTypes.number,
+        strokes: PropTypes.array,
         onChange: PropTypes.func,
         onExport: PropTypes.func,
         readOnly: PropTypes.bool,
@@ -82,8 +83,15 @@ class InkCanvas extends React.Component {
     };
 
     componentDidMount() {
-        if ((this.props.initStrokes || []).length > 0) {
-            this.setStrokes(this.props.initStrokes);
+        const strokes = this.props.initStrokes || this.props.strokes || [];
+        if (strokes.length > 0) {
+            this.setStrokes(strokes);
+        }
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (this.props.strokes !== nextProps.strokes && nextProps.strokes) {
+            this.setStrokes(nextProps.strokes || []);
         }
     }
 
