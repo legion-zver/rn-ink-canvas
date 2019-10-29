@@ -52,7 +52,7 @@ class InkCanvas extends React.Component {
             Platform.select({
                 default: () => {
                     // noinspection JSUnresolvedVariable
-                    const commandId = UIManager.RNInkCanvas.Commands[name] || 0;
+                    const commandId = UIManager.getViewManagerConfig('RNInkCanvas').Commands[name] || 0;
                     if (!commandId) {
                         throw new Error(`Cannot find command ${name} in RNInkCanvas manager!`);
                     }
